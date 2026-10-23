@@ -127,7 +127,8 @@ const specialWordsPattern = specialWords.join("|");
  */
 export function toSentenceCase(text: string, locale: string = "en-US") {
   const preserve = [] as any[]; // northword: add for tsc
-  const allcaps = text === text.toLocaleUpperCase(locale);
+  const plainText = text.replace(/<[^>]+>/g, "");
+  const allcaps = plainText === plainText.toLocaleUpperCase(locale);
 
   // sub-sentence start
   text.replace(/([.?!]\s+)(<[^>]+>)?(\p{Lu})/gu, (match, end, markup, char, i) => {
@@ -162,6 +163,13 @@ export function toSentenceCase(text: string, locale: string = "en-US") {
     preserve.push({ start: offset, end: offset + match.length, description: "protected-formatting-tag" });
     return match;
   });
+
+  if (allcaps) {
+    text.replace(/[^\s<>]*(?:<(sub|sup)>[^<]*<\/\1>[^\s<>]*)+/gi, (match, _tagName, offset) => {
+      preserve.push({ start: offset, end: offset + match.length, description: "formula" });
+      return match;
+    });
+  }
 
   // mask html tags with characters so the sentence-casing can deal with them as simple words
   let masked = text.replace(/<[^>]+>/g, (match, i) => {

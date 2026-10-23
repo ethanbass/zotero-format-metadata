@@ -107,6 +107,11 @@ const testItems: testItem[] = [
     original: `A <i>tenuis</i> relationship: traditional taxonomy obscures systematics and biogeography of the ‘ <i>Acropora tenuis</i> ’ (Scleractinia: Acroporidae) species complex`,
     expected: `A <i>tenuis</i> relationship: traditional taxonomy obscures systematics and biogeography of the ‘ <i>Acropora tenuis</i> ’ (scleractinia: acroporidae) species complex`,
   },
+  {
+    name: "带标签的全大写标题",
+    original: `GROWTH OF <i>ESCHERICHIA COLI</i> AND CO<sub>2</sub> UPTAKE IN SOIL`,
+    expected: `Growth of <i>ESCHERICHIA COLI</i> and CO<sub>2</sub> uptake in soil`,
+  },
 ];
 
 const OFFICIAL_DATA_SKIP_LIST = [
